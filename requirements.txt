@@ -1,0 +1,4 @@
+deta
+fastapi
+pytz
+requests
