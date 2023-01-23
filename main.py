@@ -56,16 +56,24 @@ async def get_card_usage_changes():
 
     for league in now["usages"].keys():
         result[league] = {}
-        now_flattened = list(chain.from_iterable(list(now["usages"][league].values())[::-1]))
-        ago_flattened = list(chain.from_iterable(list(ago["usages"][league].values())[::-1]))
+        now_sub = now["usages"][league]
+        ago_sub = ago["usages"][league]
 
-        for i, card in enumerate(now_flattened):
-            if card not in ago_flattened:
-                shift = "new"
-            else:
-                shift = str(ago_flattened.index(card) - i)
+        for sub in list(now_sub.values())[::-1]:
+            for card in sub:
+                now_index = get_index(now_sub, card)
+                ago_index = get_index(ago_sub, card)
 
-            result[league][card] = shift
+                if now_index is None:
+                    shift = "new"
+                elif now_index[0] == ago_index[0]:
+                    shift = str(ago_index[1] - now_index[1])
+                elif now_index[0] < ago_index[0]: #하위 티어로 내려갔을 때
+                    shift = str(-(len(ago_sub[ago_index[0]]) - ago_index[1] + now_index[1]))
+                elif now_index[0] > ago_index[0]: #상위 티어로 올라갔을 때
+                    shift = str(len(ago_sub[ago_index[0]]) - ago_index[1] + now_index[1])
+
+                result[league][card] = shift
 
     return {"result": result}
 
@@ -91,3 +99,10 @@ def save_card_usages(event):
 
 def subtract_a_day(date: str):
     return str(int(date) - 1)
+
+def get_index(target_list: dict, target: str):
+    for key, value in target_list.items():
+        if target in value:
+            return (key, value.index(target))
+
+    return None
