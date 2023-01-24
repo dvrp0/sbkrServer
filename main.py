@@ -64,7 +64,7 @@ async def get_card_usage_changes():
                 now_index = get_index(now_sub, card)
                 ago_index = get_index(ago_sub, card)
 
-                if now_index is None:
+                if ago_index is None:
                     shift = "new"
                 elif now_index[0] == ago_index[0]:
                     shift = str(ago_index[1] - now_index[1])
