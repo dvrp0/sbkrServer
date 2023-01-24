@@ -18,6 +18,8 @@ with open("cards.json", "r", encoding="utf-8") as c:
 with open("kitty_card_ids.json", "r") as k:
     ids = json.load(k)
 
+ids_reversed = {value: key for key, value in ids.items()}
+
 with open("translations.json", "r", encoding="utf-8") as t:
     translations = json.load(t)
 
@@ -52,11 +54,14 @@ async def get_card_usage_changes(target_date: Optional[str] = None):
         now_list = list(chain.from_iterable(list(now["usages"][league].values())[::-1]))
         ago_list = list(chain.from_iterable(list(ago["usages"][league].values())[::-1]))
 
-        for i, card in enumerate(now_list):
+        for card in now_list:
             if card not in ago_list:
                 shift = "new"
             else:
-                temp = ago_list.index(card) - i
+                now_factionized = [x for x in now_list if ids_reversed[x][0] == ids_reversed[card][0]]
+                ago_factionized = [x for x in ago_list if ids_reversed[x][0] == ids_reversed[card][0]]
+
+                temp = ago_factionized.index(card) - now_factionized.index(card)
                 now_tier = get_tier(now["usages"][league], card)
                 ago_tier = get_tier(ago["usages"][league], card)
 
