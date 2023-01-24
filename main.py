@@ -4,6 +4,7 @@ from deta import App, Deta
 from fastapi import FastAPI
 from itertools import chain
 from pytz import timezone
+from typing import Optional
 
 app = App(FastAPI())
 db = Deta(os.environ["PROJECT_KEY"]).Base("card-usages")
@@ -34,46 +35,57 @@ async def get_card(name: str):
 
 @app.get("/usages/")
 async def get_card_usage():
-    date = datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d")
+    date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
     usage = db.get(date)
-
-    if not usage:
-        usage = db.get(subtract_a_day(date))
 
     return {"result": usage["usages"]}
 
 @app.get("/usage-changes/")
-async def get_card_usage_changes():
+async def get_card_usage_changes(target_date: Optional[str] = None):
     result = {}
-    date = datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d")
+    date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d") if not target_date else target_date)
     now = db.get(date)
     ago = db.get(subtract_a_day(date))
 
-    if not now:
-        date = subtract_a_day(date)
-        now = db.get(date)
-        ago = db.get(subtract_a_day(date))
-
     for league in now["usages"].keys():
         result[league] = {}
-        now_sub = now["usages"][league]
-        ago_sub = ago["usages"][league]
+        now_list = list(chain.from_iterable(list(now["usages"][league].values())[::-1]))
+        ago_list = list(chain.from_iterable(list(ago["usages"][league].values())[::-1]))
 
-        for sub in list(now_sub.values())[::-1]:
-            for card in sub:
-                now_index = get_index(now_sub, card)
-                ago_index = get_index(ago_sub, card)
+        for i, card in enumerate(now_list):
+            if card not in ago_list:
+                shift = "new"
+            else:
+                temp = ago_list.index(card) - i
+                now_tier = get_tier(now["usages"][league], card)
+                ago_tier = get_tier(ago["usages"][league], card)
 
-                if ago_index is None:
-                    shift = "new"
-                elif now_index[0] == ago_index[0]:
-                    shift = str(ago_index[1] - now_index[1])
-                elif now_index[0] < ago_index[0]: #하위 티어로 내려갔을 때
-                    shift = str(-(len(ago_sub[ago_index[0]]) - ago_index[1] + now_index[1]))
-                elif now_index[0] > ago_index[0]: #상위 티어로 올라갔을 때
-                    shift = str(len(ago_sub[ago_index[0]]) - ago_index[1] + now_index[1])
+                if now_tier < ago_tier: #하위 티어로 내려갔을 때
+                    temp -= 1
+                elif now_tier > ago_tier: #상위 티어로 올라갔을 때
+                    temp += 1
+                
+                shift = str(temp)
 
-                result[league][card] = shift
+            result[league][card] = shift
+
+    return {"result": result}
+
+@app.get("/average-card-usage-changes/")
+async def get_average_card_usage_changes(league: str, card: str):
+    result = {}
+    date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
+
+    for i in range(7):
+        changes = (await get_card_usage_changes(date))["result"][league]
+
+        if card not in changes.keys():
+            shift = "-"
+        else:
+            shift = changes[card]
+
+        result[date[4:]] = shift
+        date = subtract_a_day(date)
 
     return {"result": result}
 
@@ -97,12 +109,17 @@ def save_card_usages(event):
                 
     db.put(data={"usages": result}, key=datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
 
+def validate_date(date: str):
+    check = db.get(date)
+
+    return date if check else subtract_a_day(date)
+
 def subtract_a_day(date: str):
     return str(int(date) - 1)
 
-def get_index(target_list: dict, target: str):
-    for key, value in target_list.items():
+def get_tier(source: dict, target: str):
+    for key, value in source.items():
         if target in value:
-            return (key, value.index(target))
+            return key
 
     return None
