@@ -11,6 +11,7 @@ db = Deta(os.environ["PROJECT_KEY"]).Base("card-usages")
 
 CARD_USAGE_LEAGUES = ["starters", "iron", "bronze", "silver", "gold", "platinum", "diamond", "heroes"]
 CARD_USAGE_URL = "https://stormbound-kitty.com/tier-list/"
+CLOUDFLARE_DEPLOY_URL = os.environ["CLOUDFLARE_DEPLOY_URL"]
 
 with open("cards.json", "r", encoding="utf-8") as c:
     cards = json.load(c)
@@ -113,6 +114,7 @@ def save_card_usages(event):
             result[league][tier["name"]] = [ids[x] for x in tier["cards"]]
                 
     db.put(data={"usages": result}, key=datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
+    requests.post(CLOUDFLARE_DEPLOY_URL)
 
 def validate_date(date: str):
     check = db.get(date)
