@@ -2,11 +2,23 @@ import json, os, re, requests
 from datetime import datetime
 from deta import App, Deta
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from itertools import chain
 from pytz import timezone
 from typing import Optional
 
-app = App(FastAPI())
+fast = FastAPI()
+
+origins = ["*"]
+fast.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app = App(fast)
 db = Deta(os.environ["PROJECT_KEY"]).Base("card-usages")
 
 CARD_USAGE_LEAGUES = ["starters", "iron", "bronze", "silver", "gold", "platinum", "diamond", "heroes"]
@@ -36,24 +48,24 @@ async def get_card(name: str):
 
     return {"result": result}
 
-@app.get("/usages/")
-async def get_card_usage():
+@app.get("/usages")
+async def get_card_usage(league: Optional[str] = None):
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
-    usage = db.get(date)
+    usage = db.get(date)["usages"]
 
-    return {"result": usage["usages"]}
+    return {"result": usage if not league else usage[league]}
 
-@app.get("/usage-changes/")
-async def get_card_usage_changes(target_date: Optional[str] = None):
+@app.get("/usage-changes")
+async def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[str] = None):
     result = {}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d") if not target_date else target_date)
     now = db.get(date)
     ago = db.get(subtract_a_day(date))
 
-    for league in now["usages"].keys():
-        result[league] = {}
-        now_list = list(chain.from_iterable(list(now["usages"][league].values())[::-1]))
-        ago_list = list(chain.from_iterable(list(ago["usages"][league].values())[::-1]))
+    for key in now["usages"].keys():
+        result[key] = {}
+        now_list = list(chain.from_iterable(list(now["usages"][key].values())[::-1]))
+        ago_list = list(chain.from_iterable(list(ago["usages"][key].values())[::-1]))
 
         for card in now_list:
             if card not in ago_list:
@@ -63,8 +75,8 @@ async def get_card_usage_changes(target_date: Optional[str] = None):
                 ago_factionized = [x for x in ago_list if ids_reversed[x][0] == ids_reversed[card][0]]
 
                 temp = ago_factionized.index(card) - now_factionized.index(card)
-                now_tier = get_tier(now["usages"][league], card)
-                ago_tier = get_tier(ago["usages"][league], card)
+                now_tier = get_tier(now["usages"][key], card)
+                ago_tier = get_tier(ago["usages"][key], card)
 
                 if now_tier < ago_tier: #하위 티어로 내려갔을 때
                     temp -= 1
@@ -73,17 +85,17 @@ async def get_card_usage_changes(target_date: Optional[str] = None):
                 
                 shift = str(temp)
 
-            result[league][card] = shift
+            result[key][card] = shift
 
-    return {"result": result}
+    return {"result": result if not league else result[league]}
 
-@app.get("/average-card-usage-changes/")
+@app.get("/average-card-usage-changes")
 async def get_average_card_usage_changes(league: str, card: str):
     result = {}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
 
     for i in range(7):
-        changes = (await get_card_usage_changes(date))["result"][league]
+        changes = (await get_card_usage_changes(target_date=date))["result"][league]
 
         if card not in changes.keys():
             shift = "-"
@@ -95,7 +107,7 @@ async def get_average_card_usage_changes(league: str, card: str):
 
     return {"result": result}
 
-@app.get("/translations/")
+@app.get("/translations")
 async def get_translations():
     return {"result": translations}
 
