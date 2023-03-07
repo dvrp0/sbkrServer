@@ -1,5 +1,5 @@
 import json, os, re, requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from deta import App, Deta
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -134,7 +134,7 @@ def validate_date(date: str):
     return date if check else subtract_a_day(date)
 
 def subtract_a_day(date: str):
-    return str(int(date) - 1)
+    return (datetime.strptime(date, "%Y%m%d") - timedelta(days=1)).strftime("%Y%m%d")
 
 def get_tier(source: dict, target: str):
     for key, value in source.items():
