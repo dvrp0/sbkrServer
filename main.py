@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from itertools import chain
 from pytz import timezone
 from typing import Optional
+from utility import search_card
 
 fast = FastAPI()
 
@@ -25,9 +26,6 @@ CARD_USAGE_LEAGUES = ["starters", "iron", "bronze", "silver", "gold", "platinum"
 CARD_USAGE_URL = "https://stormbound-kitty.com/tier-list/"
 CLOUDFLARE_DEPLOY_URL = os.environ["CLOUDFLARE_DEPLOY_URL"]
 
-with open("cards.json", "r", encoding="utf-8") as c:
-    cards = json.load(c)
-
 with open("kitty_card_ids.json", "r") as k:
     ids = json.load(k)
 
@@ -37,26 +35,18 @@ with open("translations.json", "r", encoding="utf-8") as t:
     translations = json.load(t)
 
 @app.get("/cards/")
-async def get_card(name: str):
-    result = None
-
-    for key, value in cards.items():
-        splitted = key.split()
-
-        if name in splitted or name == "".join(splitted) or name in value["aliases"]:
-            result = value["text"]
-
-    return {"result": result}
+def get_card(name: Optional[str] = None, id: Optional[str] = None, stringify: Optional[bool] = True):
+    return {"result": search_card(stringify, name, id)}
 
 @app.get("/usages")
-async def get_card_usage(league: Optional[str] = None):
+def get_card_usage(league: Optional[str] = None):
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
     usage = db.get(date)["usages"]
 
     return {"result": usage if not league else usage[league]}
 
 @app.get("/usage-changes")
-async def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[str] = None):
+def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[str] = None):
     result = {}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d") if not target_date else target_date)
     now = db.get(date)
@@ -90,12 +80,12 @@ async def get_card_usage_changes(league: Optional[str] = None, target_date: Opti
     return {"result": result if not league else result[league]}
 
 @app.get("/average-card-usage-changes")
-async def get_average_card_usage_changes(league: str, card: str):
+def get_average_card_usage_changes(league: str, card: str):
     result = {}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
 
     for i in range(7):
-        changes = (await get_card_usage_changes(target_date=date))["result"][league]
+        changes = get_card_usage_changes(target_date=date)["result"][league]
 
         if card not in changes.keys():
             shift = "-"
@@ -108,7 +98,7 @@ async def get_average_card_usage_changes(league: str, card: str):
     return {"result": result}
 
 @app.get("/translations")
-async def get_translations():
+def get_translations():
     return {"result": translations}
 
 @app.lib.cron()
