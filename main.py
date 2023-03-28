@@ -34,9 +34,15 @@ ids_reversed = {value: key for key, value in ids.items()}
 with open("translations.json", "r", encoding="utf-8") as t:
     translations = json.load(t)
 
+with open("cards.json", "r", encoding="utf-8") as c:
+    cards = json.load(c)
+
 @app.get("/cards/")
 def get_card(name: Optional[str] = None, id: Optional[str] = None, stringify: Optional[bool] = True):
-    return {"result": search_card(stringify, name, id)}
+    if not name and not id:
+        return {"result": cards}
+    else:
+        return {"result": search_card(stringify, name, id)}
 
 @app.get("/usages")
 def get_card_usage(league: Optional[str] = None):
