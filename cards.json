@@ -6559,5 +6559,55 @@
     "movement": 1,
     "ability": {},
     "type": "유닛"
+  },
+  {
+    "id": "u068",
+    "name": "눈더미",
+    "aliases": [],
+    "description": "공격 후, *주변의* 적 유닛 또는 건물 *{targets}개*에게 이 유닛의 체력만큼의 *데미지*를 *입힙니다*",
+    "cost": 6,
+    "kingdom": "중립",
+    "kingdomShort": "중립",
+    "rarity": "일반",
+    "unitTypes": "프로스틀링",
+    "strengths": [
+      6,
+      7,
+      9,
+      11,
+      13
+    ],
+    "movement": 1,
+    "ability": {
+        "targets": [
+            2,
+            2,
+            2,
+            2,
+            2
+        ]
+    },
+    "type": "유닛"
+  },
+  {
+    "id": "u069",
+    "name": "초음속 돌파자",
+    "aliases": [],
+    "description": "",
+    "cost": 5,
+    "kingdom": "중립",
+    "kingdomShort": "중립",
+    "rarity": "일반",
+    "unitTypes": "언데드",
+    "strengths": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "movement": 4,
+    "ability": {},
+    "type": "유닛"
   }
 ]
