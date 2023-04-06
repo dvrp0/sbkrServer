@@ -1,0 +1,20 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: server
+    src: ./src
+    engine: python3.9
+    public_routes:
+      - "/*"
+    presets:
+      env:
+        - name: CLOUDFLARE_DEPLOY_URL
+          description: URL for triggering Cloudflare Pages deploy hook
+        - name: DETA_KEY
+          description: Key for accessing Deta Base
+    actions:
+      - id: "save_card_usage"
+        name: "Save Card Usage"
+        description: "Saves card usage data"
+        trigger: "schedule"
+        default_interval: "0 3 * * *"

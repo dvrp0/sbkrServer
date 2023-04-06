@@ -1490,7 +1490,7 @@
     "aliases": [
       "잊영"
     ],
-    "description": "카드 사용 시, *{area}* {randomness} 아군 유닛{targets}에게 *전진*을 *명령*합니다",
+    "description": "카드 사용 시, *{area}*{randomness} 아군 유닛{targets}에게 *전진*을 *명령*합니다",
     "cost": 3,
     "kingdom": "동방의 무리",
     "kingdomShort": "무리",
@@ -1513,8 +1513,8 @@
         "주변의"
       ],
       "randomness": [
-        "|무작위",
-        "|무작위",
+        "| 무작위",
+        "| 무작위",
         "",
         "",
         ""
@@ -5935,12 +5935,20 @@
     "id": "s018",
     "name": "의식의 흐름",
     "aliases": [],
-    "description": "대상 아군 고대인 유닛을 *파괴*하고 같은 타일에 고대인이 아닌 무작위 *레벨 1* 유닛을 *사용*합니다",
+    "description": "대상 아군 고대인 유닛을 *파괴*하고 같은 타일에 고대인이 아닌 무작위 *레벨 {level}* 유닛을 *사용*합니다",
     "cost": 3,
     "kingdom": "중립",
     "kingdomShort": "중립",
     "rarity": "일반",
-    "ability": {},
+    "ability": {
+        "level": [
+            1,
+            2,
+            3,
+            4,
+            5
+        ]
+    },
     "type": "주문"
   },
   {
@@ -5999,7 +6007,7 @@
     "id": "ua20",
     "name": "빛의 인도자 가르디",
     "aliases": [],
-    "description": "이동하기 전, 전방에 적 유닛이 없다면, 레어 이상의 일회성 *0 마나 레벨 1* 사원 카드를 *생성*해 덱에 추가합니다",
+    "description": "이동하기 전, 전방에 적 유닛이 없다면, 레어 이상의 일회성 *0 마나 레벨 {level}* 사원 카드를 *생성*해 덱에 추가합니다",
     "cost": 4,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -6013,7 +6021,15 @@
       8
     ],
     "movement": 1,
-    "ability": {},
+    "ability": {
+        "level": [
+            1,
+            2,
+            3,
+            4,
+            5
+        ]
+    },
     "type": "유닛"
   },
   {

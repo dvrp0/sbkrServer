@@ -1,17 +1,19 @@
 import json, os, re, requests
+from action import Action
+from const import CARD_USAGE_LEAGUES, CARD_USAGE_URL, CLOUDFLARE_DEPLOY_URL, DETA_KEY
 from datetime import datetime, timedelta
-from deta import App, Deta
+from deta import Deta
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from itertools import chain
 from pytz import timezone
 from typing import Optional
-from utility import search_card
+from utility import get_cards, search_card
 
-fast = FastAPI()
+app = FastAPI()
 
 origins = ["*"]
-fast.add_middleware(
+app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
@@ -19,28 +21,17 @@ fast.add_middleware(
     allow_headers=["*"],
 )
 
-app = App(fast)
-db = Deta(os.environ["PROJECT_KEY"]).Base("card-usages")
-
-CARD_USAGE_LEAGUES = ["starters", "iron", "bronze", "silver", "gold", "platinum", "diamond", "heroes"]
-CARD_USAGE_URL = "https://stormbound-kitty.com/tier-list/"
-CLOUDFLARE_DEPLOY_URL = os.environ["CLOUDFLARE_DEPLOY_URL"]
+db = Deta(DETA_KEY).Base("card-usages")
 
 with open("kitty_card_ids.json", "r") as k:
     ids = json.load(k)
 
 ids_reversed = {value: key for key, value in ids.items()}
 
-with open("translations.json", "r", encoding="utf-8") as t:
-    translations = json.load(t)
-
-with open("cards.json", "r", encoding="utf-8") as c:
-    cards = json.load(c)
-
 @app.get("/cards/")
-def get_card(name: Optional[str] = None, id: Optional[str] = None, stringify: Optional[bool] = True):
+def get_card(name: Optional[str] = None, id: Optional[str] = None, stringify: Optional[bool] = False):
     if not name and not id:
-        return {"result": cards}
+        return {"result": get_cards()}
     else:
         return {"result": search_card(stringify, name, id)}
 
@@ -103,12 +94,12 @@ def get_average_card_usage_changes(league: str, card: str):
 
     return {"result": result}
 
-@app.get("/translations")
-def get_translations():
-    return {"result": translations}
+@app.post("/__space/v0/actions")
+def post_actions(action: Action):
+    if action.event.id == "save_card_usage":
+        save_card_usages()
 
-@app.lib.cron()
-def save_card_usages(event):
+def save_card_usages():
     result = {}
 
     for league in CARD_USAGE_LEAGUES:
