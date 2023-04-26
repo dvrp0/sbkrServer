@@ -1,5 +1,5 @@
 import json
-from const import CARD_SEPARATOR, CARD_TYPES
+from const import CARD_SEPARATOR, CARD_TYPES, CARD_PAGE_URL
 from typing import Optional
 
 def stringify_card(card: dict):
@@ -59,4 +59,4 @@ def search_card(stringify: bool, name: Optional[str] = None, id: Optional[str] =
             flag = id == card["id"]
 
         if flag:
-            return card["stringified"] if stringify else card
+            return f"{card['stringified']}\n{CARD_PAGE_URL}{card['id']}" if stringify else card

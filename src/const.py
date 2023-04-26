@@ -6,6 +6,7 @@ CARD_TYPES = {
     "s": "주문",
     "b": "건물"
 }
+CARD_PAGE_URL = "https://sbkr.pages.dev/cards/"
 
 CARD_USAGE_LEAGUES = ["starters", "iron", "bronze", "silver", "gold", "platinum", "diamond", "heroes"]
 CARD_USAGE_URL = "https://stormbound-kitty.com/tier-list/"
