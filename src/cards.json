@@ -982,11 +982,11 @@
     "rarity": "일반",
     "ability": {
       "damage": [
-        4,
         5,
         6,
         7,
-        8
+        8,
+        9
       ]
     },
     "type": "주문"
@@ -1622,11 +1622,11 @@
     "rarity": "일반",
     "unitTypes": "언데드",
     "strengths": [
-      2,
-      3,
       4,
-      4,
-      5
+      5,
+      6,
+      7,
+      8
     ],
     "movement": 1,
     "ability": {
@@ -6186,11 +6186,11 @@
     "kingdomShort": "그림자",
     "rarity": "레전더리",
     "strengths": [
-      2,
       3,
       4,
       5,
-      6
+      6,
+      7
     ],
     "ability": {
       "targets": [
@@ -6281,11 +6281,11 @@
         8
       ],
       "mana": [
-        1,
-        1,
-        1,
-        1,
-        1
+        2,
+        2,
+        2,
+        2,
+        2
       ]
     },
     "type": "건물"
@@ -6550,7 +6550,7 @@
     "aliases": [
       "앙품놈"
     ],
-    "description": "사망 시, 가장 약한 적 유닛을 *파괴*합니다",
+    "description": "사망 시, *{strength} 체력* 이하인 가장 약한 적 유닛을 *파괴*합니다",
     "cost": 3,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -6564,7 +6564,15 @@
       5
     ],
     "movement": 1,
-    "ability": {},
+    "ability": {
+        "strength": [
+            2,
+            3,
+            4,
+            5,
+            6
+        ]
+    },
     "type": "유닛"
   },
   {
@@ -6740,7 +6748,7 @@
     "id": "u071",
     "name": "천사 같은 티카",
     "aliases": [],
-    "description": "이동하기 전, *주변의* 무작위 적 유닛을 *혼란*시키고 바로 앞 타일로 *순간이동*합니다",
+    "description": "이동하기 전, *주변의* 무작위 적 유닛을 *혼란*시킨 뒤 바로 앞 타일로 *순간이동*합니다",
     "cost": 3,
     "kingdom": "중립",
     "kingdomShort": "중립",
