@@ -76,12 +76,12 @@ def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[s
 
     return {"result": result if not league else result[league]}
 
-@app.get("/average-card-usage-changes")
-def get_average_card_usage_changes(league: str, card: str):
+@app.get("/ranged-card-usage-changes")
+def get_ranged_card_usage_changes(league: str, card: str, dates: Optional[int] = 7):
     result = {}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
 
-    for i in range(7):
+    for _ in range(dates):
         changes = get_card_usage_changes(target_date=date)["result"][league]
 
         if card not in changes.keys():
