@@ -110,10 +110,10 @@
     "unitTypes": "나이트",
     "strengths": [
       3,
-      3,
       4,
-      4,
-      6
+      5,
+      6,
+      7
     ],
     "movement": 0,
     "ability": {
@@ -428,8 +428,8 @@
     "aliases": [
       "스토커"
     ],
-    "description": "사망 시, 앞에 있는 *{strength} 체력* 이하 유닛들을 *파괴*합니다. 뒤에 있는 타일들에 *{strength} 체력* 레이븐을 *소환*합니다",
-    "cost": 6,
+    "description": "사망 시, 전방의 *{strength} 체력* 이하 적 유닛과 건물들을 파괴합니다. 후방의 타일들에 *{strength} 체력* 레이븐을 *소환*합니다",
+    "cost": 5,
     "kingdom": "중립",
     "kingdomShort": "중립",
     "rarity": "에픽",
@@ -2173,7 +2173,7 @@
     "id": "u309",
     "name": "미아 박사",
     "aliases": [],
-    "description": "카드 사용 시, *{area}*아군 건물들의 능력을 *발동*시킵니다",
+    "description": "카드 사용 시, {area}아군 건물들의 능력을 *발동*시킵니다",
     "cost": 2,
     "kingdom": "철갑 연합",
     "kingdomShort": "철갑",
@@ -2189,9 +2189,9 @@
     "movement": 0,
     "ability": {
       "area": [
-        "인접|인접한 ",
-        "주변|주변의 ",
-        "주변|주변의 ",
+        "인접|*인접한* ",
+        "주변|*주변의* ",
+        "주변|*주변의* ",
         "모든|",
         "모든 |"
       ]
@@ -3447,9 +3447,9 @@
     "strengths": [
       3,
       4,
-      4,
       5,
-      6
+      6,
+      7
     ],
     "movement": 1,
     "ability": {
@@ -6314,7 +6314,7 @@
     "id": "b009",
     "name": "골판지 대저택",
     "aliases": [],
-    "description": "내 턴 시작 시, 가장 앞에 있는 적 유닛을 *혼란*시킵니다다",
+    "description": "내 턴 시작 시, 가장 앞에 있는 적 유닛{targets}을 *혼란*시킵니다",
     "cost": 4,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -6326,7 +6326,15 @@
       7,
       8
     ],
-    "ability": {},
+    "ability": {
+      "targets": [
+        " 1|",
+        "1|",
+        "2| *2명*",
+        "2| *2명*",
+        "2명| *2명*"
+      ]
+    },
     "type": "건물"
   },
   {
@@ -6763,6 +6771,56 @@
     ],
     "movement": 1,
     "ability": {},
+    "type": "유닛"
+  },
+  {
+    "id": "u072",
+    "name": "귀중한 우두머리",
+    "aliases": [],
+    "description": "이동하기 전, 내 손에서 가장 비싼 카드를 덱에 있는 더 저렴한 카드로 *교체*합니다",
+    "cost": 4,
+    "kingdom": "중립",
+    "kingdomShort": "중립",
+    "rarity": "에픽",
+    "unitTypes": "해적 고대인",
+    "strengths": [
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "movement": 1,
+    "ability": {},
+    "type": "유닛"
+  },
+  {
+    "id": "u073",
+    "name": "근원의 설계도",
+    "aliases": [],
+    "description": "이동하기 전, *주변의* 무작위 아군 유닛에게 *{strength} 체력*을 *부여*합니다",
+    "cost": 4,
+    "kingdom": "철갑 연합",
+    "kingdomShort": "철갑",
+    "rarity": "레어",
+    "unitTypes": "컨스트럭트 고대인",
+    "strengths": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "movement": 1,
+    "ability": {
+      "strength": [
+        1,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
     "type": "유닛"
   }
 ]
