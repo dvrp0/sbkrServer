@@ -48,11 +48,15 @@ def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[s
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d") if not target_date else target_date)
     now = db.get(date)
     ago = db.get(subtract_a_day(date))
+    two_ago = db.get(subtract_a_day(subtract_a_day(date)))
 
     for key in now["usages"].keys():
         result[key] = {}
         now_list = list(chain.from_iterable(list(now["usages"][key].values())[::-1]))
         ago_list = list(chain.from_iterable(list(ago["usages"][key].values())[::-1]))
+
+        if now_list == ago_list: #아직 업데이트되지 않았을 때
+            ago_list = list(chain.from_iterable(list(two_ago["usages"][key].values())[::-1]))
 
         for card in now_list:
             if card not in ago_list:
@@ -113,7 +117,7 @@ def save_card_usages():
             result[league][tier["name"]] = [ids[x] for x in tier["cards"]]
                 
     db.put(data={"usages": result}, key=datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
-    requests.post(CLOUDFLARE_DEPLOY_URL)
+    # requests.post(CLOUDFLARE_DEPLOY_URL)
 
 def validate_date(date: str):
     check = db.get(date)
