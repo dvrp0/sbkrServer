@@ -44,14 +44,13 @@ def get_card_usage(league: Optional[str] = None):
 
 @app.get("/usage-changes")
 def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[str] = None):
-    result = {}
+    result = {x: {} for x in CARD_USAGE_LEAGUES}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d") if not target_date else target_date)
     now = db.get(date)
     ago = db.get(subtract_a_day(date))
     two_ago = db.get(subtract_a_day(subtract_a_day(date)))
 
     for key in now["usages"].keys():
-        result[key] = {}
         now_list = list(chain.from_iterable(list(now["usages"][key].values())[::-1]))
         ago_list = list(chain.from_iterable(list(ago["usages"][key].values())[::-1]))
 
@@ -81,22 +80,19 @@ def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[s
     return {"result": result if not league else result[league]}
 
 @app.get("/ranged-card-usage-changes")
-def get_ranged_card_usage_changes(league: str, card: str, dates: Optional[int] = 7):
-    result = {}
+def get_ranged_card_usage_changes(id: str, league: Optional[str] = None, dates: Optional[int] = 7):
+    result = {x: {} for x in CARD_USAGE_LEAGUES}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
 
     for _ in range(dates):
-        changes = get_card_usage_changes(target_date=date)["result"][league]
+        all_changes = get_card_usage_changes(target_date=date)["result"]
 
-        if card not in changes.keys():
-            shift = "-"
-        else:
-            shift = changes[card]
+        for key, changes in all_changes.items():
+            result[key][date[4:]] = "-" if id not in changes.keys() else changes[id]
 
-        result[date[4:]] = shift
         date = subtract_a_day(date)
 
-    return {"result": result}
+    return {"result": result if not league else result[league]}
 
 @app.post("/__space/v0/actions")
 def post_actions(action: Action):
@@ -104,11 +100,9 @@ def post_actions(action: Action):
         save_card_usages()
 
 def save_card_usages():
-    result = {}
+    result = {x: {} for x in CARD_USAGE_LEAGUES}
 
     for league in CARD_USAGE_LEAGUES:
-        result[league] = {}
-
         response = requests.get(f"{CARD_USAGE_URL}{league}")
         regex = re.search('"tiers":.+?(?=,"breadcrumbs")', response.text)
         datas = json.loads(f"{{{regex.group()}}}")
