@@ -1,3 +1,5 @@
+deta
 fastapi
+uvicorn
 pytz
 requests

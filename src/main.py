@@ -1,6 +1,6 @@
-import json, os, re, requests
+import json, re, requests
 from action import Action
-from const import CARD_USAGE_LEAGUES, CARD_USAGE_URL, CLOUDFLARE_DEPLOY_URL, DETA_KEY
+from const import CARD_USAGE_LEAGUES, CARD_USAGE_URL, DETA_KEY, ON_DEMAND_ISR_URL
 from datetime import datetime, timedelta
 from deta import Deta
 from fastapi import FastAPI
@@ -117,7 +117,7 @@ def save_card_usages():
             result[league][tier["name"]] = [ids[x] for x in tier["cards"]]
                 
     db.put(data={"usages": result}, key=datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
-    # requests.post(CLOUDFLARE_DEPLOY_URL)
+    requests.post(ON_DEMAND_ISR_URL)
 
 def validate_date(date: str):
     check = db.get(date)

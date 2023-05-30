@@ -13,4 +13,6 @@ CARD_USAGE_URL = "https://stormbound-kitty.com/tier-list/"
 
 CLOUDFLARE_DEPLOY_URL = os.environ["CLOUDFLARE_DEPLOY_URL"]
 
+ON_DEMAND_ISR_URL = os.environ["ON_DEMAND_ISR_URL"]
+
 DETA_KEY = os.environ["DETA_KEY"]
