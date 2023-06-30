@@ -5832,7 +5832,7 @@
     "id": "ua11",
     "name": "부활자 사이로",
     "aliases": [],
-    "description": "이동하기 전, 턴이 시작된 이후로 파괴된 영웅이 아닌 *주변의* 아군 유닛 *{targets}명*을 *재소환*합니다",
+    "description": "이동하기 전, 턴이 시작된 이후로 파괴된 영웅이 아닌 *주변의* 아군 유닛{targets}을 *재소환*합니다",
     "cost": 6,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -5848,11 +5848,11 @@
     "movement": 1,
     "ability": {
       "targets": [
-        1,
-        2,
-        3,
-        4,
-        99
+        " 1| *1명*",
+        "2| *2명*",
+        "3| *3명*",
+        "4| *4명*",
+        "8명|들"
       ]
     },
     "type": "유닛"
@@ -6795,7 +6795,7 @@
     "type": "유닛"
   },
   {
-    "id": "u073",
+    "id": "u320",
     "name": "근원의 설계도",
     "aliases": [],
     "description": "이동하기 전, *주변의* 무작위 아군 유닛에게 *{strength} 체력*을 *부여*합니다",
@@ -6819,6 +6819,64 @@
         2,
         3,
         4
+      ]
+    },
+    "type": "유닛"
+  },
+  {
+    "id": "u119",
+    "name": "수정방호자",
+    "aliases": [],
+    "description": "이동하기 전, 내 기지와 인접한 무작위 타일로 *순간이동*합니다. 성공 시, 기지에 *{strength} 체력*을 *부여*합니다",
+    "cost": 6,
+    "kingdom": "겨울 협정",
+    "kingdomShort": "겨울",
+    "rarity": "에픽",
+    "unitTypes": "드워프 고대인",
+    "strengths": [
+      6,
+      7,
+      8,
+      9,
+      11
+    ],
+    "movement": 1,
+    "ability": {
+      "strength": [
+        1,
+        2,
+        2,
+        3,
+        3
+      ]
+    },
+    "type": "유닛"
+  },
+  {
+    "id": "u217",
+    "name": "집결하는 극단원",
+    "aliases": [],
+    "description": "이동하기 전, 내 기지와 인접한 무작위 타일에 *{strength} 체력* 사티로스를 *소환*합니다",
+    "cost": 4,
+    "kingdom": "동방의 무리",
+    "kingdomShort": "동방",
+    "rarity": "레어",
+    "unitTypes": "사티로스 고대인",
+    "strengths": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "movement": 1,
+    "ability": {
+      "strength": [
+        1,
+        2,
+        3,
+        4,
+        5
       ]
     },
     "type": "유닛"

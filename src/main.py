@@ -28,7 +28,7 @@ with open("kitty_card_ids.json", "r") as k:
 
 ids_reversed = {value: key for key, value in ids.items()}
 
-@app.get("/cards/")
+@app.get("/cards")
 def get_card(name: Optional[str] = None, id: Optional[str] = None, stringify: Optional[bool] = False):
     if not name and not id:
         return {"result": get_cards()}
@@ -36,8 +36,8 @@ def get_card(name: Optional[str] = None, id: Optional[str] = None, stringify: Op
         return {"result": search_card(stringify, name, id)}
 
 @app.get("/usages")
-def get_card_usage(league: Optional[str] = None):
-    date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
+def get_card_usage(league: Optional[str] = None, target_date: Optional[str] = None):
+    date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d")) if not target_date else target_date
     usage = db.get(date)["usages"]
 
     return {"result": usage if not league else usage[league]}
@@ -109,7 +109,7 @@ def save_card_usages():
 
         for tier in datas["tiers"]:
             result[league][tier["name"]] = [ids[x] for x in tier["cards"]]
-                
+
     db.put(data={"usages": result}, key=datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
     requests.post(ON_DEMAND_ISR_URL)
 
