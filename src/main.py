@@ -36,13 +36,17 @@ def get_card(name: Optional[str] = None, id: Optional[str] = None, stringify: Op
         return {"result": search_card(stringify, name, id)}
 
 @app.get("/usages")
-def get_card_usage(league: Optional[str] = None, target_date: Optional[str] = None):
+def get_card_usages(league: Optional[str] = None, target_date: Optional[str] = None):
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d")) if not target_date else target_date
 
     if date in usage_caches.keys():
         return {"result": usage_caches[date] if not league else usage_caches[date][league]}
 
     usages = db.get(date)["usages"]
+    usage_caches[date] = usages
+
+    if league:
+        usages = {league: usages[league]}
 
     for usage in usages.values():
         for tier, value in usage.items():
@@ -54,9 +58,28 @@ def get_card_usage(league: Optional[str] = None, target_date: Optional[str] = No
                 "ironclad": [x for x in value if ids_reversed[x][0] == "I"]
             }
 
-    usage_caches[date] = usages
-
     return {"result": usages if not league else usages[league]}
+
+@app.get("/usage-ranks")
+def get_card_usage_ranks(league: Optional[str] = None, target_date: Optional[str] = None):
+    kingdoms = ["neutral", "swarm", "winter", "shadowfen", "ironclad"]
+
+    result = {x: {} for x in CARD_USAGE_LEAGUES} if not league else {league: {}}
+    date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d") if not target_date else target_date)
+    usages = get_card_usages(league, date)["result"]
+
+    for key in result.keys():
+        ranks = {x: [] for x in kingdoms}
+
+        for value in (usages[key].values() if not league else usages.values()):
+            for kingdom in kingdoms:
+                ranks[kingdom][:0] = value[kingdom]
+
+        for kingdom, cards in ranks.items():
+            for card in cards:
+                result[key][card] = ranks[kingdom].index(card) + 1
+
+    return {"result": result if not league else result[league]}
 
 @app.get("/usage-changes")
 def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[str] = None):
@@ -64,21 +87,21 @@ def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[s
 
     result = {x: {} for x in CARD_USAGE_LEAGUES} if not league else {league: {}}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d") if not target_date else target_date)
-    now = get_card_usage(target_date=date)["result"]
-    ago = get_card_usage(target_date=subtract_a_day(date))["result"]
+    now = get_card_usages(league, date)["result"]
+    ago = get_card_usages(league, subtract_a_day(date))["result"]
 
     if now == ago: #아직 업데이트되지 않았을 때
-        ago = get_card_usage(target_date=subtract_a_day(subtract_a_day(date)))["result"]
+        ago = get_card_usages(league, subtract_a_day(subtract_a_day(date)))["result"]
 
     for key in result.keys():
         now_list = {x: [] for x in kingdoms}
         ago_list = {x: [] for x in kingdoms}
 
-        for now_value in now[key].values():
+        for now_value in (now[key].values() if not league else now.values()):
             for kingdom in kingdoms:
                 now_list[kingdom][:0] = now_value[kingdom]
 
-        for ago_value in ago[key].values():
+        for ago_value in (ago[key].values() if not league else ago.values()):
             for kingdom in kingdoms:
                 ago_list[kingdom][:0] = ago_value[kingdom]
 
@@ -88,8 +111,8 @@ def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[s
                     shift = "new"
                 else:
                     temp = ago_list[kingdom].index(card) - now_list[kingdom].index(card)
-                    now_tier = get_tier(now[key], card)
-                    ago_tier = get_tier(ago[key], card)
+                    now_tier = get_tier(now[key] if not league else now, card)
+                    ago_tier = get_tier(ago[key] if not league else ago, card)
 
                     if now_tier < ago_tier: #하위 티어로 내려갔을 때
                         temp -= 1
@@ -102,20 +125,41 @@ def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[s
 
     return {"result": result if not league else result[league]}
 
-@app.get("/ranged-card-usage-changes")
-def get_ranged_card_usage_changes(id: str, league: Optional[str] = None, dates: Optional[int] = 7):
-    result = {x: {} for x in CARD_USAGE_LEAGUES}
+@app.get("/ranged-usages")
+def get_ranged_card_usages(id: str, league: Optional[str] = None, dates: Optional[int] = 7):
+    result = {x: {} for x in CARD_USAGE_LEAGUES} if not league else {league: {}}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
 
     for _ in range(dates):
-        all_changes = get_card_usage_changes(target_date=date)["result"]
+        all_ranks = get_card_usage_ranks(league, date)["result"]
 
-        for key, changes in all_changes.items():
+        for key in result.keys():
+            ranks = all_ranks[key] if not league else all_ranks
+            result[key][date[4:]] = "-" if id not in ranks.keys() else str(ranks[id])
+
+        date = subtract_a_day(date)
+
+    return {"result": result if not league else result[league]}
+
+@app.get("/ranged-usage-changes")
+def get_ranged_card_usage_changes(id: str, league: Optional[str] = None, dates: Optional[int] = 7):
+    result = {x: {} for x in CARD_USAGE_LEAGUES} if not league else {league: {}}
+    date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
+
+    for _ in range(dates):
+        all_changes = get_card_usage_changes(league, date)["result"]
+
+        for key in result.keys():
+            changes = all_changes[key] if not league else all_changes
             result[key][date[4:]] = "-" if id not in changes.keys() else changes[id]
 
         date = subtract_a_day(date)
 
     return {"result": result if not league else result[league]}
+
+@app.get("/test/get-cached-usages")
+def get_cached_usages():
+    return {"result": usage_caches}
 
 @app.post("/__space/v0/actions")
 def post_actions(action: Action):
