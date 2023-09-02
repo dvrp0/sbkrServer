@@ -25,8 +25,8 @@ db = Deta(DETA_KEY).Base("card-usages")
 
 with open("kitty_card_ids.json", "r") as k:
     ids = json.load(k)
-
 ids_reversed = {value: key for key, value in ids.items()}
+usage_caches = {}
 
 @app.get("/cards")
 def get_card(name: Optional[str] = None, id: Optional[str] = None, stringify: Optional[bool] = False):
@@ -38,44 +38,67 @@ def get_card(name: Optional[str] = None, id: Optional[str] = None, stringify: Op
 @app.get("/usages")
 def get_card_usage(league: Optional[str] = None, target_date: Optional[str] = None):
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d")) if not target_date else target_date
-    usage = db.get(date)["usages"]
 
-    return {"result": usage if not league else usage[league]}
+    if date in usage_caches.keys():
+        return {"result": usage_caches[date] if not league else usage_caches[date][league]}
+
+    usages = db.get(date)["usages"]
+
+    for usage in usages.values():
+        for tier, value in usage.items():
+            usage[tier] = {
+                "neutral": [x for x in value if ids_reversed[x][0] == "N"],
+                "swarm": [x for x in value if ids_reversed[x][0] == "S"],
+                "winter": [x for x in value if ids_reversed[x][0] == "W"],
+                "shadowfen": [x for x in value if ids_reversed[x][0] == "F"],
+                "ironclad": [x for x in value if ids_reversed[x][0] == "I"]
+            }
+
+    usage_caches[date] = usages
+
+    return {"result": usages if not league else usages[league]}
 
 @app.get("/usage-changes")
 def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[str] = None):
-    result = {x: {} for x in CARD_USAGE_LEAGUES}
+    kingdoms = ["neutral", "swarm", "winter", "shadowfen", "ironclad"]
+
+    result = {x: {} for x in CARD_USAGE_LEAGUES} if not league else {league: {}}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d") if not target_date else target_date)
-    now = db.get(date)
-    ago = db.get(subtract_a_day(date))
-    two_ago = db.get(subtract_a_day(subtract_a_day(date)))
+    now = get_card_usage(target_date=date)["result"]
+    ago = get_card_usage(target_date=subtract_a_day(date))["result"]
 
-    for key in now["usages"].keys():
-        now_list = list(chain.from_iterable(list(now["usages"][key].values())[::-1]))
-        ago_list = list(chain.from_iterable(list(ago["usages"][key].values())[::-1]))
+    if now == ago: #아직 업데이트되지 않았을 때
+        ago = get_card_usage(target_date=subtract_a_day(subtract_a_day(date)))["result"]
 
-        if now_list == ago_list: #아직 업데이트되지 않았을 때
-            ago_list = list(chain.from_iterable(list(two_ago["usages"][key].values())[::-1]))
+    for key in result.keys():
+        now_list = {x: [] for x in kingdoms}
+        ago_list = {x: [] for x in kingdoms}
 
-        for card in now_list:
-            if card not in ago_list:
-                shift = "new"
-            else:
-                now_factionized = [x for x in now_list if ids_reversed[x][0] == ids_reversed[card][0]]
-                ago_factionized = [x for x in ago_list if ids_reversed[x][0] == ids_reversed[card][0]]
+        for now_value in now[key].values():
+            for kingdom in kingdoms:
+                now_list[kingdom][:0] = now_value[kingdom]
 
-                temp = ago_factionized.index(card) - now_factionized.index(card)
-                now_tier = get_tier(now["usages"][key], card)
-                ago_tier = get_tier(ago["usages"][key], card)
+        for ago_value in ago[key].values():
+            for kingdom in kingdoms:
+                ago_list[kingdom][:0] = ago_value[kingdom]
 
-                if now_tier < ago_tier: #하위 티어로 내려갔을 때
-                    temp -= 1
-                elif now_tier > ago_tier: #상위 티어로 올라갔을 때
-                    temp += 1
+        for kingdom, cards in now_list.items():
+            for card in cards:
+                if card not in ago_list[kingdom]:
+                    shift = "new"
+                else:
+                    temp = ago_list[kingdom].index(card) - now_list[kingdom].index(card)
+                    now_tier = get_tier(now[key], card)
+                    ago_tier = get_tier(ago[key], card)
+
+                    if now_tier < ago_tier: #하위 티어로 내려갔을 때
+                        temp -= 1
+                    elif now_tier > ago_tier: #상위 티어로 올라갔을 때
+                        temp += 1
                 
-                shift = str(temp)
+                    shift = str(temp)
 
-            result[key][card] = shift
+                result[key][card] = shift
 
     return {"result": result if not league else result[league]}
 
@@ -100,6 +123,7 @@ def post_actions(action: Action):
         save_card_usages()
 
 def save_card_usages():
+    global usage_caches
     result = {x: {} for x in CARD_USAGE_LEAGUES}
 
     for league in CARD_USAGE_LEAGUES:
@@ -110,20 +134,22 @@ def save_card_usages():
         for tier in datas["tiers"]:
             result[league][tier["name"]] = [ids[x] for x in tier["cards"]]
 
+    usage_caches = {}
     db.put(data={"usages": result}, key=datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
     requests.post(ON_DEMAND_ISR_URL)
 
 def validate_date(date: str):
-    check = db.get(date)
+    result = db.fetch({"key": date})
 
-    return date if check else subtract_a_day(date)
+    return date if result.items else subtract_a_day(date)
 
 def subtract_a_day(date: str):
     return (datetime.strptime(date, "%Y%m%d") - timedelta(days=1)).strftime("%Y%m%d")
 
 def get_tier(source: dict, target: str):
-    for key, value in source.items():
-        if target in value:
-            return key
+    for tier, kingdom in source.items():
+        for cards in kingdom.values():
+            if target in cards:
+                return tier
 
     return None
