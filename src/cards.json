@@ -6958,5 +6958,55 @@
       ]
     },
     "type": "유닛"
+  },
+  {
+    "id": "u074",
+    "name": "광기의 상아",
+    "aliases": [],
+    "description": "데미지를 견뎌낸 후, 자신이 *인접한* 가장 강력한 유닛 또는 건물을 공격하도록 *강제*합니다",
+    "cost": 4,
+    "kingdom": "중립",
+    "kingdomShort": "중립",
+    "rarity": "레어",
+    "unitTypes": "펠린 엘더",
+    "strengths": [
+      5,
+      6,
+      7,
+      8,
+      10
+    ],
+    "movement": 1,
+    "ability": {},
+    "type": "유닛"
+  },
+  {
+    "id": "u075",
+    "name": "주름진 장루원",
+    "aliases": [],
+    "description": "데미지를 견뎌낸 후, 적 덱의 맨 위로부터 *마나가 {mana} 적은* 일회성 *카드 복사본*을 *생성*해 덱에 추가합니다",
+    "cost": 3,
+    "kingdom": "중립",
+    "kingdomShort": "중립",
+    "rarity": "에픽",
+    "unitTypes": "해적 엘더",
+    "strengths": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "movement": 0,
+    "ability": {
+      "mana": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "type": "유닛"
   }
 ]
