@@ -41,22 +41,20 @@ def get_card_usages(league: Optional[str] = None, target_date: Optional[str] = N
 
     if date in usage_caches.keys():
         return {"result": usage_caches[date] if not league else usage_caches[date][league]}
+    else:
+        usages = db.get(date)["usages"]
 
-    usages = db.get(date)["usages"]
-    usage_caches[date] = usages
+        for usage in usages.values():
+            for tier, value in usage.items():
+                usage[tier] = {
+                    "neutral": [x for x in value if ids_reversed[x][0] == "N"],
+                    "swarm": [x for x in value if ids_reversed[x][0] == "S"],
+                    "winter": [x for x in value if ids_reversed[x][0] == "W"],
+                    "shadowfen": [x for x in value if ids_reversed[x][0] == "F"],
+                    "ironclad": [x for x in value if ids_reversed[x][0] == "I"]
+                }
 
-    if league:
-        usages = {league: usages[league]}
-
-    for usage in usages.values():
-        for tier, value in usage.items():
-            usage[tier] = {
-                "neutral": [x for x in value if ids_reversed[x][0] == "N"],
-                "swarm": [x for x in value if ids_reversed[x][0] == "S"],
-                "winter": [x for x in value if ids_reversed[x][0] == "W"],
-                "shadowfen": [x for x in value if ids_reversed[x][0] == "F"],
-                "ironclad": [x for x in value if ids_reversed[x][0] == "I"]
-            }
+        usage_caches[date] = usages
 
     return {"result": usages if not league else usages[league]}
 
