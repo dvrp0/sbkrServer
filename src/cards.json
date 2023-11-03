@@ -852,10 +852,10 @@
     "unitTypes": "영웅",
     "strengths": [
       7,
+      8,
       9,
-      11,
-      12,
-      15
+      10,
+      12
     ],
     "movement": 0,
     "ability": {
@@ -4241,11 +4241,11 @@
     "rarity": "레전더리",
     "unitTypes": "나이트 영웅",
     "strengths": [
-      3,
       4,
       5,
       6,
-      7
+      7,
+      8
     ],
     "movement": 0,
     "ability": {
@@ -4443,17 +4443,17 @@
     "name": "돌격의 호랑이",
     "aliases": [],
     "description": "카드 사용 시, 전방의 적 유닛 수만큼의 속도를 *획득*합니다",
-    "cost": 2,
+    "cost": 3,
     "kingdom": "중립",
     "kingdomShort": "중립",
     "rarity": "레어",
     "unitTypes": "펠린",
     "strengths": [
-      1,
-      2,
       3,
       4,
-      5
+      5,
+      6,
+      7
     ],
     "movement": 0,
     "ability": {},
@@ -4463,7 +4463,7 @@
     "id": "u053",
     "name": "야생 퓨마",
     "aliases": [],
-    "description": "카드 사용 시, *주변에* 적이 없다면 *{movement} 속도*를, *인접한* 적이 없다면 *{amount} 속도*를 *획득*합니다",
+    "description": "카드 사용 시, *주변에* 유닛이 없다면 *{movement} 속도*를, *인접한* 유닛이 없다면 *{amount} 속도*를 *획득*합니다",
     "cost": 2,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -5519,7 +5519,7 @@
     "aliases": [
       "반짝냥이"
     ],
-    "description": "카드 사용 시, 자신을 *혼란*시키고 *{movement} 속도*를 *획득*합니다",
+    "description": "카드 사용 시, 자신과 다른 아군 유닛을 *혼란*시키고 *{movement} 속도*를 *획득*합니다",
     "cost": 2,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -5913,11 +5913,11 @@
     "rarity": "에픽",
     "unitTypes": "고대인",
     "strengths": [
-      4,
       5,
       6,
       7,
-      8
+      8,
+      9
     ],
     "movement": 0,
     "ability": {
