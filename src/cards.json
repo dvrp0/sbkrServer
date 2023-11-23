@@ -7008,5 +7008,45 @@
       ]
     },
     "type": "유닛"
+  },
+  {
+    "id": "u076",
+    "name": "신성한 바리",
+    "aliases": [
+        "DVRP",
+        "데이브리퍼",
+        "리퍼"
+    ],
+    "description": "데미지를 견뎌낸 후, 드래곤이 아닌 *주변의* 무작위 유닛에게 *{damage} 데미지*를 *입힙니다*. 그 유닛이 사망하면 해당 타일에 *{strength} 체력* 드래곤을 *소환*합니다",
+    "cost": 5,
+    "kingdom": "중립",
+    "kingdomShort": "중립",
+    "rarity": "에픽",
+    "unitTypes": "드래곤 엘더",
+    "strengths": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "movement": 1,
+    "ability": {
+      "damage": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "strength": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "type": "유닛"
   }
 ]

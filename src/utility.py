@@ -59,4 +59,4 @@ def search_card(stringify: bool, name: Optional[str] = None, id: Optional[str] =
             flag = id == card["id"]
 
         if flag:
-            return f"{card['stringified']}\n{CARD_PAGE_URL}{card['id']}" if stringify else card
+            return f"{card['stringified'].replace('신성한 바리', '✨DVRP🇰🇷')}\n{CARD_PAGE_URL}{card['id']}" if stringify else card
