@@ -16,3 +16,6 @@ CLOUDFLARE_DEPLOY_URL = os.environ["CLOUDFLARE_DEPLOY_URL"]
 ON_DEMAND_ISR_URL = os.environ["ON_DEMAND_ISR_URL"]
 
 DETA_KEY = os.environ["DETA_KEY"]
+
+KITTY_QUERY_IDS = "https://5hlpazgd.api.sanity.io/v2021-10-21/data/query/production?query=*%5B_type%3D%3D%22card%22%5D%7B%22id%22%3Aid.current%2C%22sid%22%3Asid.current%7D"
+KITTY_QUERY_CARDS = "https://5hlpazgd.api.sanity.io/v2021-10-21/data/query/production?query=*%5B_type%3D%3D%22card%22%5D+%7B%0A++...%2C%0A++%22id%22%3A+id.current%2C%0A++%22sid%22%3A+sid.current%2C%0A++%22image%22%3A+image.asset-%3Eurl%0A%7D"

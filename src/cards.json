@@ -1153,11 +1153,11 @@
     "rarity": "에픽",
     "unitTypes": "프로스틀링",
     "strengths": [
+      6,
       8,
       10,
-      12,
-      15,
-      18
+      13,
+      16
     ],
     "movement": 0,
     "ability": {
@@ -2235,11 +2235,11 @@
     "kingdomShort": "철갑",
     "rarity": "일반",
     "strengths": [
-      3,
-      3,
-      4,
       5,
-      6
+      5,
+      6,
+      7,
+      8
     ],
     "ability": {
       "strength": [
@@ -3172,11 +3172,11 @@
     "rarity": "에픽",
     "unitTypes": "컨스트럭트",
     "strengths": [
-      4,
       5,
       6,
       7,
-      8
+      8,
+      9
     ],
     "movement": 1,
     "ability": {
@@ -4335,11 +4335,11 @@
         6
       ],
       "strength": [
-        3,
-        3,
-        4,
         5,
-        6
+        5,
+        6,
+        7,
+        8
       ]
     },
     "type": "유닛"
@@ -5484,11 +5484,11 @@
     "rarity": "레어",
     "unitTypes": "컨스트럭트",
     "strengths": [
-      3,
       4,
       5,
       6,
-      7
+      7,
+      8
     ],
     "movement": 2,
     "ability": {},
@@ -6853,7 +6853,7 @@
       9,
       11
     ],
-    "movement": 1,
+    "movement": 0,
     "ability": {
       "strength": [
         1,
@@ -6876,11 +6876,11 @@
     "rarity": "레어",
     "unitTypes": "사티로스 고대인",
     "strengths": [
-      1,
       2,
       3,
       4,
-      5
+      5,
+      6
     ],
     "movement": 1,
     "ability": {
