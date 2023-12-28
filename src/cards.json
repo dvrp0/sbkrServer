@@ -2129,10 +2129,10 @@
     "ability": {
       "strength": [
         1,
-        1,
         2,
-        2,
-        3
+        3,
+        3,
+        4
       ]
     },
     "type": "유닛"
@@ -3201,11 +3201,11 @@
     "rarity": "에픽",
     "unitTypes": "레이븐",
     "strengths": [
-      5,
       6,
       7,
       8,
-      10
+      9,
+      11
     ],
     "movement": 1,
     "ability": {},
@@ -5832,11 +5832,11 @@
         3
       ],
       "mana": [
-        1,
-        1,
-        1,
-        1,
-        1
+        2,
+        2,
+        2,
+        2,
+        2
       ]
     },
     "type": "유닛"
@@ -6697,11 +6697,11 @@
     "rarity": "일반",
     "unitTypes": "프로스틀링",
     "strengths": [
+      5,
       6,
       7,
       9,
-      11,
-      13
+      11
     ],
     "movement": 1,
     "ability": {
@@ -6776,11 +6776,11 @@
     "rarity": "에픽",
     "unitTypes": "펠린 고대인",
     "strengths": [
+      1,
       2,
       3,
       4,
-      5,
-      6
+      5
     ],
     "movement": 1,
     "ability": {},
@@ -6943,11 +6943,11 @@
     "movement": 1,
     "ability": {
       "strength": [
+        1,
         2,
         3,
         4,
-        5,
-        6
+        5
       ],
       "amount": [
         3,
