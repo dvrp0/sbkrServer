@@ -124,7 +124,7 @@ def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[s
     return {"result": result if not league else result[league]}
 
 @app.get("/ranged-usages")
-def get_ranged_card_usages(id: str, league: Optional[str] = None, dates: Optional[int] = 7):
+def get_ranged_card_usages(id: str, league: Optional[str] = None, dates: Optional[int] = 7, is_average: bool = False):
     result = {x: {} for x in CARD_USAGE_LEAGUES} if not league else {league: {}}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
 
@@ -136,6 +136,17 @@ def get_ranged_card_usages(id: str, league: Optional[str] = None, dates: Optiona
             result[key][date[4:]] = "-" if id not in ranks.keys() else str(ranks[id])
 
         date = subtract_a_day(date)
+
+    if is_average:
+        values = list(result.values()) if not league else [result[league]]
+        ranks = [[0 if x == "-" else int(x) for x in value.values()] for value in values]
+        averages = [round(sum(rank) / len(rank), 2) if sum(rank) > 0 else -1 for rank in ranks]
+
+        if not league:
+            for i, average in enumerate(averages):
+                result[CARD_USAGE_LEAGUES[i]] = average
+        else:
+            result[league] = averages[0]
 
     return {"result": result if not league else result[league]}
 
