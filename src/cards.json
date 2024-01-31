@@ -261,11 +261,11 @@
     "movement": 0,
     "ability": {
       "damage": [
-        2,
         3,
         4,
         5,
-        6
+        6,
+        7
       ]
     },
     "type": "유닛"
@@ -1727,11 +1727,11 @@
     "movement": 2,
     "ability": {
       "damage": [
+        1,
+        1,
         2,
         2,
-        2,
-        2,
-        2
+        3
       ]
     },
     "type": "유닛"
@@ -3241,11 +3241,11 @@
         3
       ],
       "damage": [
-        2,
         3,
         4,
         5,
-        6
+        6,
+        7
       ]
     },
     "type": "유닛"
@@ -3623,11 +3623,11 @@
     "movement": 0,
     "ability": {
       "strength": [
-        1,
         2,
         3,
         4,
-        5
+        5,
+        6
       ]
     },
     "type": "유닛"
@@ -3999,11 +3999,11 @@
     "rarity": "에픽",
     "unitTypes": "드래곤",
     "strengths": [
-      2,
       3,
       4,
       5,
-      6
+      6,
+      7
     ],
     "movement": 1,
     "ability": {},
@@ -6609,20 +6609,20 @@
     "rarity": "레어",
     "unitTypes": "사티로스",
     "strengths": [
-      1,
-      2,
       2,
       3,
-      4
+      3,
+      4,
+      5
     ],
     "movement": 0,
     "ability": {
       "amount": [
-        3,
-        3,
-        3,
-        3,
-        3
+        4,
+        4,
+        4,
+        4,
+        4
       ],
       "strength": [
         2,
