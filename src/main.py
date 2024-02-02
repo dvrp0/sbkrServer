@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from deta import Deta
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from itertools import chain
 from pytz import timezone
 from typing import Optional
 from utility import get_cards, search_card
@@ -62,22 +61,28 @@ def get_card_usages(league: Optional[str] = None, target_date: Optional[str] = N
 def get_card_usage_ranks(league: Optional[str] = None, target_date: Optional[str] = None):
     kingdoms = ["neutral", "swarm", "winter", "shadowfen", "ironclad"]
 
-    result = {x: {} for x in CARD_USAGE_LEAGUES} if not league else {league: {}}
+    result = {x: [] for x in CARD_USAGE_LEAGUES} if not league else {league: []}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d") if not target_date else target_date)
     usages = get_card_usages(league, date)["result"]
 
     for key in result.keys():
         ranks = {x: [] for x in kingdoms}
 
-        for value in (usages[key].values() if not league else usages.values()):
+        for tier, value in (usages[key].items() if not league else usages.items()):
             for kingdom in kingdoms:
-                ranks[kingdom][:0] = value[kingdom]
+                ranks[kingdom] = [f"{x}|{tier}|{kingdom}" for x in value[kingdom]] + ranks[kingdom]
 
         for kingdom, cards in ranks.items():
             for card in cards:
-                result[key][card] = ranks[kingdom].index(card) + 1
+                id, tier, kingdom = card.split("|")
+                result[key].append({
+                    "id": id,
+                    "kingdom": kingdom,
+                    "tier": tier,
+                    "rank": ranks[kingdom].index(card) + 1
+                })
 
-    return {"result": result if not league else result[league]}
+    return result if not league else result[league]
 
 @app.get("/usage-changes")
 def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[str] = None):
@@ -125,22 +130,28 @@ def get_card_usage_changes(league: Optional[str] = None, target_date: Optional[s
 
 @app.get("/ranged-usages")
 def get_ranged_card_usages(id: str, league: Optional[str] = None, dates: Optional[int] = 7, is_average: bool = False):
-    result = {x: {} for x in CARD_USAGE_LEAGUES} if not league else {league: {}}
+    result = {x: [] for x in CARD_USAGE_LEAGUES} if not league else {league: []}
     date = validate_date(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
 
     for _ in range(dates):
-        all_ranks = get_card_usage_ranks(league, date)["result"]
+        all_ranks = get_card_usage_ranks(league, date)
 
         for key in result.keys():
             ranks = all_ranks[key] if not league else all_ranks
-            result[key][date[4:]] = "-" if id not in ranks.keys() else str(ranks[id])
+            target = [x for x in ranks if x["id"] == id]
+
+            result[key].append({
+                "date": date[4:],
+                "tier": None if len(target) == 0 else target[0]["tier"],
+                "rank": None if len(target) == 0 else target[0]["rank"]
+            })
 
         date = subtract_a_day(date)
 
     if is_average:
         values = list(result.values()) if not league else [result[league]]
-        ranks = [[0 if x == "-" else int(x) for x in value.values()] for value in values]
-        averages = [round(sum(rank) / len(rank), 2) if sum(rank) > 0 else -1 for rank in ranks]
+        ranks = [[0 if x["rank"] is None else x["rank"] for x in value] for value in values]
+        averages = [round(sum(rank) / len(rank), 2) if sum(rank) > 0 else None for rank in ranks]
 
         if not league:
             for i, average in enumerate(averages):
@@ -148,7 +159,7 @@ def get_ranged_card_usages(id: str, league: Optional[str] = None, dates: Optiona
         else:
             result[league] = averages[0]
 
-    return {"result": result if not league else result[league]}
+    return result if not league else result[league]
 
 @app.get("/ranged-usage-changes")
 def get_ranged_card_usage_changes(id: str, league: Optional[str] = None, dates: Optional[int] = 7):
