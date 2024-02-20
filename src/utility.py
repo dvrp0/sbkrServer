@@ -54,7 +54,7 @@ def get_cards():
 def search_card(stringify: bool, name: Optional[str] = None, id: Optional[str] = None):
     for card in cards:
         if name:
-            flag = name in card["name"] or name in card["aliases"]
+            flag = name.replace(" ", "") in card["name"].replace(" ", "") or name.replace(" ", "") in [alias.replace(" ", "") for alias in card["aliases"]]
         elif id:
             flag = id == card["id"]
 
