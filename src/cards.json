@@ -1268,7 +1268,7 @@
     "name": "칠비어드",
     "aliases": [],
     "description": "유닛 또는 건물을 공격하기 전, *{strength} 체력*을 *획득*합니다",
-    "cost": 9,
+    "cost": 8,
     "kingdom": "겨울 협정",
     "kingdomShort": "겨울",
     "rarity": "일반",
@@ -1783,10 +1783,10 @@
     "unitTypes": "언데드 영웅",
     "strengths": [
       6,
+      7,
       8,
-      10,
-      10,
-      12
+      8,
+      10
     ],
     "movement": 0,
     "ability": {
@@ -2783,6 +2783,27 @@
     "type": "유닛"
   },
   {
+    "id": "u117",
+    "name": "얼음 가루",
+    "aliases": [],
+    "description": "카드 사용 시, 자신을 *빙결*시킵니다",
+    "cost": 2,
+    "kingdom": "겨울 협정",
+    "kingdomShort": "겨울",
+    "rarity": "일반",
+    "unitTypes": "프로스틀링",
+    "strengths": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "movement": 0,
+    "ability": {},
+    "type": "유닛"
+  },
+  {
     "id": "u023",
     "name": "석공",
     "aliases": [],
@@ -2869,16 +2890,16 @@
       2,
       2,
       3,
-      3
+      4
     ],
     "movement": 0,
     "ability": {
       "strength": [
-        1,
-        1,
-        2,
-        2,
-        3
+        "1",
+        "1-2",
+        "1-2",
+        "1-2",
+        "1-2"
       ]
     },
     "type": "유닛"
@@ -5572,11 +5593,11 @@
     "movement": 3,
     "ability": {
       "damage": [
-        1,
-        1,
-        1,
-        1,
-        1
+        2,
+        2,
+        2,
+        2,
+        2
       ]
     },
     "type": "유닛"
@@ -6805,11 +6826,11 @@
     "rarity": "에픽",
     "unitTypes": "해적 고대인",
     "strengths": [
-      4,
       5,
       6,
       7,
-      8
+      8,
+      9
     ],
     "movement": 1,
     "ability": {},
@@ -6855,11 +6876,11 @@
     "rarity": "에픽",
     "unitTypes": "드워프 고대인",
     "strengths": [
-      6,
-      7,
       8,
       9,
-      11
+      10,
+      11,
+      13
     ],
     "movement": 0,
     "ability": {
@@ -7008,11 +7029,11 @@
     "movement": 0,
     "ability": {
       "mana": [
-        1,
-        1,
-        1,
-        1,
-        1
+        2,
+        2,
+        2,
+        2,
+        2
       ]
     },
     "type": "유닛"
