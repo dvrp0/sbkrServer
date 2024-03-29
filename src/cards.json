@@ -144,7 +144,7 @@
       6,
       7
     ],
-    "movement": 2,
+    "movement": 3,
     "ability": {
       "damage": [
         3,
@@ -1128,11 +1128,11 @@
     "rarity": "레어",
     "unitTypes": "프로스틀링",
     "strengths": [
-      1,
       2,
       3,
       4,
-      5
+      5,
+      6
     ],
     "movement": 1,
     "ability": {
@@ -1775,7 +1775,7 @@
     "id": "u208",
     "name": "군중의 여왕",
     "aliases": [],
-    "description": "카드 사용 시, 덱에서 레어 이하의 사티로스 최대 *{amount}명*을 같은 행의 무작위 타일에 *사용*합니다",
+    "description": "카드 사용 시, 덱에서 영웅이 아닌 사티로스 최대 *{amount}명*을 같은 행의 무작위 타일에 *{strength} 체력*으로 *사용*합니다",
     "cost": 6,
     "kingdom": "동방의 무리",
     "kingdomShort": "무리",
@@ -1796,6 +1796,13 @@
         1,
         2,
         2
+      ],
+      "strength": [
+        2,
+        3,
+        4,
+        4,
+        5
       ]
     },
     "type": "유닛"
@@ -2555,14 +2562,14 @@
       2,
       3
     ],
-    "movement": 1,
+    "movement": 2,
     "ability": {
       "strength": [
+        2,
+        3,
         3,
         4,
-        4,
-        5,
-        6
+        5
       ]
     },
     "type": "유닛"
@@ -3030,11 +3037,11 @@
     "rarity": "일반",
     "unitTypes": "레이븐",
     "strengths": [
-      4,
       5,
       6,
       7,
-      8
+      8,
+      9
     ],
     "movement": 0,
     "ability": {},
@@ -4322,17 +4329,17 @@
       "순출"
     ],
     "description": "내 전선 바로 뒤의 무작위 타일에 *{strength} 체력* 사티로스를 *소환*합니다",
-    "cost": 2,
+    "cost": 3,
     "kingdom": "동방의 무리",
     "kingdomShort": "무리",
     "rarity": "레어",
     "ability": {
       "strength": [
-        3,
-        4,
         5,
         6,
-        7
+        7,
+        8,
+        9
       ]
     },
     "type": "주문"
@@ -6640,9 +6647,9 @@
     "strengths": [
       2,
       3,
-      3,
       4,
-      5
+      5,
+      6
     ],
     "movement": 0,
     "ability": {
@@ -6656,9 +6663,9 @@
       "strength": [
         2,
         2,
-        3,
-        3,
-        3
+        2,
+        2,
+        2
       ]
     },
     "type": "유닛"
