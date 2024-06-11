@@ -261,11 +261,11 @@
     "movement": 0,
     "ability": {
       "damage": [
-        3,
         4,
         5,
         6,
-        7
+        7,
+        8
       ]
     },
     "type": "유닛"
@@ -884,11 +884,11 @@
     "rarity": "레전더리",
     "unitTypes": "영웅",
     "strengths": [
-      5,
-      6,
-      6,
+      7,
       8,
-      10
+      8,
+      10,
+      12
     ],
     "movement": 0,
     "ability": {
@@ -897,7 +897,7 @@
         1,
         2,
         2,
-        3
+        2
       ]
     },
     "type": "유닛"
@@ -1454,18 +1454,25 @@
     "aliases": [
       "현선"
     ],
-    "description": "*{mana} 마나*를 *획득*합니다",
+    "description": "*{mana} 마나*를 *획득*하고 가장 약한 아군 유닛에게 *{strength} 체력*을 *부여*합니다",
     "cost": 9,
     "kingdom": "겨울 협정",
     "kingdomShort": "겨울",
     "rarity": "에픽",
     "ability": {
       "mana": [
-        11,
-        12,
         13,
-        14,
-        15
+        13,
+        13,
+        13,
+        13
+      ],
+      "strength": [
+        2,
+        3,
+        4,
+        5,
+        6
       ]
     },
     "type": "주문"
@@ -1590,7 +1597,7 @@
     "id": "u203",
     "name": "옹호자",
     "aliases": [],
-    "description": "공격하기 전, 적 기지에 *{damage} 데미지*를 *입힙니다*",
+    "description": "유닛 또는 건물을 공격하기 전, 적 기지에 *{damage} 데미지*를 *입힙니다*",
     "cost": 6,
     "kingdom": "동방의 무리",
     "kingdomShort": "무리",
@@ -2325,7 +2332,7 @@
     "id": "s303",
     "name": "불타는 물줄기",
     "aliases": [],
-    "description": "대상 유닛과 같은 열에 있는 적 유닛들을 *밀어내고 {maxDamage} 데미지*를 *입힙니다*",
+    "description": "대상 유닛과 같은 열에 있는 적 유닛들을 *밀어내고* 그 열의 적 유닛과 건물들에게 *{maxDamage} 데미지*를 *입힙니다*",
     "cost": 4,
     "kingdom": "철갑 연합",
     "kingdomShort": "철갑",
@@ -4697,11 +4704,11 @@
     "movement": 1,
     "ability": {
       "strength": [
-        4,
+        3,
         4,
         4,
         5,
-        5
+        6
       ]
     },
     "type": "유닛"
@@ -5696,7 +5703,7 @@
     "id": "s403",
     "name": "비누 세척",
     "aliases": [],
-    "description": "중독된 아군 유닛들에게 *{strength} 체력*과 *활력*을 *부여*합니다",
+    "description": "중독된 유닛들에게 *{strength} 체력*과 *활력*을 *부여*합니다",
     "cost": 1,
     "kingdom": "그림자 부족",
     "kingdomShort": "그림자",
