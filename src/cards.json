@@ -1399,24 +1399,24 @@
       "얼중"
     ],
     "description": "내 턴 시작 시, *{mana} 마나*를 *획득*합니다",
-    "cost": 5,
+    "cost": 3,
     "kingdom": "겨울 협정",
     "kingdomShort": "겨울",
     "rarity": "레어",
     "strengths": [
+      2,
+      3,
       4,
       5,
-      6,
-      7,
-      8
+      6
     ],
     "ability": {
       "mana": [
-        2,
-        2,
-        2,
-        2,
-        2
+        1,
+        1,
+        1,
+        1,
+        1
       ]
     },
     "type": "건물"
@@ -3321,26 +3321,26 @@
       "붐스틱 장교"
     ],
     "description": "카드 사용 시, 뒤에 있는 가장 가까운 적에게 *{damage} 데미지*를 *입힙니다*",
-    "cost": 6,
+    "cost": 3,
     "kingdom": "중립",
     "kingdomShort": "중립",
     "rarity": "레어",
     "unitTypes": "로덴트",
     "strengths": [
+      2,
+      3,
+      4,
       5,
-      6,
-      7,
-      8,
-      10
+      6
     ],
     "movement": 1,
     "ability": {
       "damage": [
+        3,
+        4,
         5,
         6,
-        7,
-        8,
-        10
+        7
       ]
     },
     "type": "유닛"
@@ -3555,7 +3555,7 @@
       "쓰땅드"
     ],
     "description": "어떤 기지에도 *인접하지* 않고 사망 시, 드래곤이 아닌 유닛들에게 *{damage} 데미지*를 *입힙니다*",
-    "cost": 6,
+    "cost": 5,
     "kingdom": "겨울 협정",
     "kingdomShort": "겨울",
     "rarity": "레어",
@@ -3570,11 +3570,11 @@
     "movement": 1,
     "ability": {
       "damage": [
+        2,
         3,
         4,
         5,
-        6,
-        7
+        6
       ]
     },
     "type": "유닛"
@@ -5888,7 +5888,7 @@
     "id": "ua11",
     "name": "부활자 사이로",
     "aliases": [],
-    "description": "이동하기 전, 턴이 시작된 이후로 파괴된 영웅이 아닌 *주변의* 아군 유닛{targets}을 *재소환*합니다",
+    "description": "이동하기 전, 턴이 시작된 이후로 파괴된 영웅이 아닌 아군 유닛 *{targets}명*을 *재소환*합니다",
     "cost": 6,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -5904,11 +5904,11 @@
     "movement": 1,
     "ability": {
       "targets": [
-        " 1| *1명*",
-        "2| *2명*",
-        "3| *3명*",
-        "4| *4명*",
-        "8명|들"
+        2,
+        2,
+        3,
+        3,
+        4
       ]
     },
     "type": "유닛"
@@ -6371,16 +6371,16 @@
     "name": "골판지 대저택",
     "aliases": [],
     "description": "내 턴 시작 시, 가장 앞에 있는 적 유닛{targets}을 *혼란*시킵니다",
-    "cost": 4,
+    "cost": 3,
     "kingdom": "중립",
     "kingdomShort": "중립",
     "rarity": "일반",
     "strengths": [
+      3,
       4,
       5,
       6,
-      7,
-      8
+      7
     ],
     "ability": {
       "targets": [
@@ -6840,11 +6840,11 @@
     "rarity": "에픽",
     "unitTypes": "해적 고대인",
     "strengths": [
+      4,
       5,
       6,
       7,
-      8,
-      9
+      8
     ],
     "movement": 1,
     "ability": {},
@@ -6957,11 +6957,11 @@
     "movement": 1,
     "ability": {
       "strength": [
+        2,
         3,
         4,
         5,
-        6,
-        7
+        6
       ]
     },
     "type": "유닛"
