@@ -346,20 +346,20 @@
     "rarity": "레어",
     "unitTypes": "토드",
     "strengths": [
-      2,
       4,
-      4,
+      5,
+      6,
       7,
-      7
+      8
     ],
     "movement": 1,
     "ability": {
       "strength": [
-        2,
-        2,
         3,
         3,
-        4
+        4,
+        4,
+        5
       ]
     },
     "type": "유닛"
@@ -1312,11 +1312,11 @@
     "movement": 1,
     "ability": {
       "strength": [
-        4,
         5,
         6,
         7,
-        8
+        8,
+        10
       ]
     },
     "type": "유닛"
@@ -1481,18 +1481,25 @@
     "id": "s102",
     "name": "한겨울의 혼돈",
     "aliases": [],
-    "description": "*{strength} 체력* 이하의 적 유닛 중, 이미 *빙결*된 유닛들을 *파괴*하고 나머지 유닛들을 *빙결*시킵니다",
+    "description": "빙결된 적 유닛들에게 *{damage} 데미지*를 입히고 *{strength} 체력* 이하의 적 유닛들을 *빙결*시킵니다",
     "cost": 4,
     "kingdom": "겨울 협정",
     "kingdomShort": "겨울",
     "rarity": "레어",
     "ability": {
+      "damage": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
       "strength": [
         5,
         6,
         7,
         8,
-        9
+        10
       ]
     },
     "type": "주문"
@@ -3087,7 +3094,7 @@
     "aliases": [
       "관홍"
     ],
-    "description": "내 기지와 *인접한* 유닛들에게 *{damage} 데미지*를 *입힙니다*",
+    "description": "내 기지와 *인접한* 적 유닛들에게 *{damage} 데미지*를 *입힙니다*",
     "cost": 4,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -4175,11 +4182,11 @@
     "rarity": "일반",
     "ability": {
       "strength": [
-        4,
         5,
         6,
         7,
-        8
+        8,
+        10
       ],
       "amount": [
         6,
@@ -4726,11 +4733,11 @@
     "rarity": "에픽",
     "unitTypes": "프로스틀링 엘더",
     "strengths": [
-      5,
       6,
       7,
       8,
-      9
+      9,
+      10
     ],
     "movement": 1,
     "ability": {},
@@ -5009,20 +5016,20 @@
     "rarity": "레전더리",
     "unitTypes": "엘더 영웅",
     "strengths": [
-      5,
       6,
       7,
-      9,
-      11
+      8,
+      10,
+      12
     ],
     "movement": 1,
     "ability": {
       "targets": [
-        2,
-        3,
         3,
         4,
-        4
+        4,
+        5,
+        5
       ]
     },
     "type": "유닛"
