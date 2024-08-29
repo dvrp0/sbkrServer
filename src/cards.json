@@ -1374,11 +1374,11 @@
     "rarity": "레전더리",
     "unitTypes": "드워프 영웅",
     "strengths": [
+      6,
       7,
       8,
-      9,
-      11,
-      13
+      10,
+      12
     ],
     "movement": 2,
     "ability": {
@@ -1386,8 +1386,8 @@
         3,
         3,
         4,
-        5,
-        6
+        4,
+        5
       ]
     },
     "type": "유닛"
@@ -4593,7 +4593,7 @@
     "aliases": [
       "배복"
     ],
-    "description": "공격 후, 이 유닛보다 약한 적 유닛들을 *혼란*시킵니다",
+    "description": "공격 후, *{strength} 체력* 이하의 적 유닛들을 *혼란*시킵니다",
     "cost": 5,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -4607,14 +4607,22 @@
       10
     ],
     "movement": 1,
-    "ability": {},
+    "ability": {
+      "strength": [
+        4,
+        5,
+        6,
+        7,
+        9
+      ]
+    },
     "type": "유닛"
   },
   {
     "id": "u057",
     "name": "감미로운 자매",
     "aliases": [],
-    "description": "*혼란*에 빠진 유닛을 공격하기 전, 그 유닛의 체력 중 최대 *{maxDamage} 데미지*를 그 유닛의 *주변* 적들에게 *입힙니다*",
+    "description": "*혼란*에 빠진 유닛을 공격하기 전, 그 유닛의 *주변* 적들에게 *{maxDamage} 데미지*를 *입힙니다*",
     "cost": 4,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -4630,11 +4638,11 @@
     "movement": 1,
     "ability": {
       "maxDamage": [
+        4,
         5,
         6,
         7,
-        8,
-        9
+        8
       ]
     },
     "type": "유닛"
@@ -5339,7 +5347,7 @@
       "덱 준비 완료",
       "덱준완"
     ],
-    "description": "이동하기 전, *주변의* 적 유닛 *{targets}명*의 능력을 *무력화*합니다",
+    "description": "이동하기 전, *주변* 유닛 *{targets}명*의 능력을 *무력화*합니다",
     "cost": 4,
     "kingdom": "중립",
     "kingdomShort": "중립",
@@ -6600,7 +6608,7 @@
       "천소"
     ],
     "description": "아군 유닛들에게 내 손의 빈 카드 공간 하나마다 *{strength} 체력*을 무작위로 나누어 *부여*합니다",
-    "cost": 5,
+    "cost": 4,
     "kingdom": "중립",
     "kingdomShort": "중립",
     "rarity": "에픽",
@@ -6659,11 +6667,11 @@
     "rarity": "레어",
     "unitTypes": "사티로스",
     "strengths": [
+      1,
       2,
       3,
       4,
-      5,
-      6
+      5
     ],
     "movement": 0,
     "ability": {
@@ -6841,17 +6849,17 @@
     "name": "귀중한 우두머리",
     "aliases": [],
     "description": "이동하기 전, 내 손에서 가장 비싼 카드를 덱에 있는 더 저렴한 카드로 *교체*합니다",
-    "cost": 4,
+    "cost": 5,
     "kingdom": "중립",
     "kingdomShort": "중립",
     "rarity": "에픽",
     "unitTypes": "해적 고대인",
     "strengths": [
-      4,
       5,
       6,
       7,
-      8
+      8,
+      10
     ],
     "movement": 1,
     "ability": {},
@@ -7095,6 +7103,42 @@
         4,
         5,
         6
+      ]
+    },
+    "type": "유닛"
+  },
+  {
+    "id": "ua22",
+    "name": "천문의 소환사",
+    "aliases": [],
+    "description": "이동하기 전, *주변의* 무작위 타일에 *{strength} 체력* 유닛 *{targets}명*을 *소환*합니다",
+    "cost": 8,
+    "kingdom": "중립",
+    "kingdomShort": "중립",
+    "rarity": "에픽",
+    "unitTypes": "고대인",
+    "strengths": [
+      6,
+      8,
+      10,
+      12,
+      14
+    ],
+    "movement": 1,
+    "ability": {
+      "strength": [
+        2,
+        2,
+        3,
+        3,
+        4
+      ],
+      "targets": [
+        2,
+        3,
+        3,
+        4,
+        4
       ]
     },
     "type": "유닛"
