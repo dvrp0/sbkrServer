@@ -1,5 +1,6 @@
-deta
 fastapi
+fastapi-utilities
 uvicorn
 pytz
 requests
+psycopg2-binary

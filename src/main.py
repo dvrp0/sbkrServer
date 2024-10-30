@@ -1,15 +1,23 @@
 import json, re, requests
-from action import Action
-from const import CARD_USAGE_LEAGUES, CARD_USAGE_URL, DETA_KEY, ON_DEMAND_ISR_URL
+from const import CARD_USAGE_LEAGUES, CARD_USAGE_URL, ON_DEMAND_ISR_URL
+from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
-from deta import Deta
+from database import Database
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_utilities import repeat_at
 from pytz import timezone
 from typing import Optional
 from utility import get_cards, search_card
 
-app = FastAPI()
+db = Database()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    db.close()
+
+app = FastAPI(lifespan=lifespan)
 
 origins = ["*"]
 app.add_middleware(
@@ -19,8 +27,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-db = Deta(DETA_KEY).Base("card-usages")
 
 with open("kitty_card_ids.json", "r") as k:
     ids = json.load(k)
@@ -41,7 +47,7 @@ def get_card_usages(league: Optional[str] = None, target_date: Optional[str] = N
     if date in usage_caches.keys():
         return {"result": usage_caches[date] if not league else usage_caches[date][league]}
     else:
-        usages = db.get(date)["usages"]
+        usages = db.get_card_usages(date)
 
         for usage in usages.values():
             for tier, value in usage.items():
@@ -181,12 +187,10 @@ def get_ranged_card_usage_changes(id: str, league: Optional[str] = None, dates: 
 def get_cached_usages():
     return {"result": usage_caches}
 
-@app.post("/__space/v0/actions")
-def post_actions(action: Action):
-    if action.event.id == "save_card_usage":
-        save_card_usages()
-
+@repeat_at(cron="0 * * * *")
 def save_card_usages():
+    print("Saving card usages")
+
     global usage_caches
     result = {x: {} for x in CARD_USAGE_LEAGUES}
 
@@ -199,13 +203,13 @@ def save_card_usages():
             result[league][tier["name"]] = [ids[x] for x in tier["cards"]]
 
     usage_caches = {}
-    db.put(data={"usages": result}, key=datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"))
+    db.save_card_usages(datetime.now(timezone("Asia/Seoul")).strftime("%Y%m%d"), result)
     requests.post(ON_DEMAND_ISR_URL)
 
 def validate_date(date: str):
-    result = db.fetch({"key": date})
+    db.cursor.execute("SELECT COUNT(1) FROM card_usages WHERE date=%s", (date,))
 
-    return date if result.items else subtract_a_day(date)
+    return date if db.cursor.fetchone()[0] > 0 else subtract_a_day(date)
 
 def subtract_a_day(date: str):
     return (datetime.strptime(date, "%Y%m%d") - timedelta(days=1)).strftime("%Y%m%d")
