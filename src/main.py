@@ -14,6 +14,7 @@ db = Database()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    save_card_usages()
     yield
     db.close()
 
