@@ -7175,6 +7175,7 @@
         1
       ]
     },
-    "type": "건물"
+    "type": "건물",
+    "hideInList": true
   }
 ]
