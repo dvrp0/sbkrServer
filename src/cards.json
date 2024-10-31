@@ -3697,7 +3697,7 @@
       2,
       2,
       3,
-      3
+      4
     ],
     "movement": 2,
     "ability": {
@@ -3706,7 +3706,7 @@
         1,
         2,
         2,
-        3
+        2
       ]
     },
     "type": "유닛"
@@ -3910,13 +3910,13 @@
     "rarity": "레어",
     "unitTypes": "로덴트",
     "strengths": [
+      2,
       3,
       4,
       5,
-      6,
-      7
+      6
     ],
-    "movement": 0,
+    "movement": 1,
     "ability": {},
     "type": "유닛"
   },
@@ -4124,16 +4124,16 @@
     "name": "화약탑",
     "aliases": [],
     "description": "내 턴 시작 시, *폭발*하여 적들에게 *{damage} 데미지*를 *입힙니다*",
-    "cost": 6,
+    "cost": 5,
     "kingdom": "중립",
     "kingdomShort": "중립",
     "rarity": "레어",
     "strengths": [
-      3,
-      4,
       4,
       5,
-      6
+      6,
+      7,
+      8
     ],
     "ability": {
       "damage": [
@@ -4920,11 +4920,11 @@
     "rarity": "레어",
     "unitTypes": "엘더",
     "strengths": [
-      3,
       4,
       5,
       6,
-      7
+      7,
+      8
     ],
     "movement": 0,
     "ability": {},
@@ -6497,7 +6497,7 @@
     "id": "u319",
     "name": "전선 기술자",
     "aliases": [],
-    "description": "카드 사용 시, *주변의* 아군 건물 하나마다 *{strength} 체력*을 *획득*합니다",
+    "description": "카드 사용 시, 아군 건물 하나마다 *{strength} 체력*을 *획득*합니다",
     "cost": 4,
     "kingdom": "철갑 연합",
     "kingdomShort": "철갑",
@@ -7049,11 +7049,11 @@
     "rarity": "에픽",
     "unitTypes": "해적 엘더",
     "strengths": [
-      3,
       4,
       5,
       6,
-      7
+      7,
+      8
     ],
     "movement": 0,
     "ability": {
