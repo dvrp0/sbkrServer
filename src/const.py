@@ -4,7 +4,8 @@ CARD_SEPARATOR = " · "
 CARD_TYPES = {
     "u": "유닛",
     "s": "주문",
-    "b": "건물"
+    "b": "건물",
+    "t": "기타"
 }
 CARD_PAGE_URL = "https://sbkr.pages.dev/cards/"
 
